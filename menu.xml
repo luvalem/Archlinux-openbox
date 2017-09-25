@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openbox.org/                 file:///usr/share/openbox/menu.xsd">
+	<menu id="root-menu" label="Openbox 3">
+		<menu execute="~/bin/places-pipemenu" id="pipe-83496" label="Emplacements"/>
+		<separator/>
+		<item label="Terminal">
+			<action name="Execute">
+				<execute>terminator</execute>
+			</action>
+		</item>
+		<item label="Firefox">
+			<action name="Execute">
+				<execute>firefox</execute>
+			</action>
+		</item>
+		<!-- This requires the presence of the 'menu' package to work -->
+		<item label="Thunar">
+			<action name="Execute">
+				<execute>thunar</execute>
+			</action>
+		</item>
+		<item label="Geany">
+			<action name="Execute">
+				<execute>geany</execute>
+			</action>
+		</item>
+		<item label="Vlc">
+			<action name="Execute">
+				<execute>vlc</execute>
+			</action>
+		</item>
+		<item label="Nano">
+			<action name="Execute">
+				<execute>terminator -e nano</execute>
+			</action>
+		</item>
+		<separator/>
+		<menu id="root-menu-43827" label="Accessoires">
+			<item label="Catfish">
+				<action name="Execute">
+					<execute>catfish</execute>
+				</action>
+			</item>
+			<item label="File-Roller">
+				<action name="Execute">
+					<execute>file-roller</execute>
+				</action>
+			</item>
+			<item label="Htop">
+				<action name="Execute">
+					<execute>terminator -T 'htop task manager' -e htop</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="root-menu-83514" label="Graphisme">
+			<item label="Gimp">
+				<action name="Execute">
+					<execute>gimp</execute>
+				</action>
+			</item>
+			<item label="Mirage">
+				<action name="Execute">
+					<execute>mirage</execute>
+				</action>
+			</item>
+			<item label="Xsane">
+				<action name="Execute">
+					<execute>xsane</execute>
+				</action>
+			</item>
+			<item label="Capture écran">
+				<action name="Execute">
+					<execute>xfce4-screenshooter</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="root-menu-71811" label="Multimedia">
+			<item label="Vlc">
+				<action name="Execute">
+					<execute>vlc</execute>
+				</action>
+			</item>
+			<item label="Audacious">
+				<action name="Execute">
+					<execute>audacious</execute>
+				</action>
+			</item>
+			<item label="Gravure">
+				<action name="Execute">
+					<execute>xfburn</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="root-menu-53929" label="Réseau">
+			<item label="Firefox">
+				<action name="Execute">
+					<execute>firefox</execute>
+				</action>
+			</item>
+			<item label="Torrent">
+				<action name="Execute">
+					<execute>transmission-gtk</execute>
+				</action>
+			</item>
+		</menu>
+		<separator/>
+		<menu id="root-menu-11533" label="Bureautique">
+			<item label="Libreoffice Writer">
+				<action name="Execute">
+					<execute>libreoffice --writer</execute>
+				</action>
+			</item>
+			<item label="Libreoffice Calc">
+				<action name="Execute">
+					<execute>libreoffice --calc</execute>
+				</action>
+			</item>
+			<item label="Evince">
+				<action name="Execute">
+					<execute>evince</execute>
+				</action>
+			</item>
+		</menu>
+		<separator/>
+		<menu id="root-menu-911026" label="Préférences">
+			<menu id="root-menu-911026-495654" label="Openbox">
+				<item label="Editer Menu.xml">
+					<action name="Execute">
+						<execute>geany ~/.config/openbox/menu.xml</execute>
+					</action>
+				</item>
+				<item label="Editer Rc.xml">
+					<action name="Execute">
+						<execute>geany ~/.config/openbox/rc.xml</execute>
+					</action>
+				</item>
+				<item label="Editer Autostart">
+					<action name="Execute">
+						<execute>geany ~/.config/openbox/autostart</execute>
+					</action>
+				</item>
+				<separator/>
+				<item label="Obmenu">
+					<action name="Execute">
+						<execute>obmenu</execute>
+					</action>
+				</item>
+				<item label="Reconfigure">
+					<action name="Execute">
+						<execute>openbox --reconfigure</execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="root-menu-911026-714432" label="Apparence">
+				<item label="Lxappearance">
+					<action name="Execute">
+						<execute>lxappearance</execute>
+					</action>
+				</item>
+				<item label="Fonds Ecran">
+					<action name="Execute">
+						<execute>nitrogen</execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="root-menu-911026-822953" label="Tint2">
+				<item label="Tint2restart">
+					<action name="Execute">
+						<execute>~/bin/tint2restart</execute>
+					</action>
+				</item>
+				<item label="Editer Tint2rc">
+					<action name="Execute">
+						<execute>geany ~/.config/tint2/tint2rc</execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="root-menu-911026-693053" label="Conky">
+				<item label="Editer Conkyrc">
+					<action name="Execute">
+						<execute>geany ~/.conkyrc</execute>
+					</action>
+				</item>
+				<item label="Relancer Conky">
+					<action name="Execute">
+						<execute>conky &amp;</execute>
+					</action>
+				</item>
+			</menu>
+		</menu>
+		<menu id="root-menu-255933" label="System">
+			<item label="Gparted">
+				<action name="Execute">
+					<execute>gksudo gparted</execute>
+				</action>
+			</item>
+			<item label="Root Terminal">
+				<action name="Execute">
+					<execute>gksudo terminator</execute>
+				</action>
+			</item>
+			<item label="Root Fichiers">
+				<action name="Execute">
+					<execute>gksudo thunar</execute>
+				</action>
+			</item>
+			<item label="Config printer">
+				<action name="Execute">
+					<execute>gksudo system-config-printer</execute>
+				</action>
+			</item>
+		</menu>
+		<separator/>
+		<item label="Sortie">
+			<action name="Execute">
+				<execute>python3 ~/bin/ob-session-logout.py 
+</execute>
+			</action>
+		</item>
+	</menu>
+</openbox_menu>
