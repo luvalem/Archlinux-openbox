@@ -9,7 +9,7 @@ Le fichier compton.conf doit se trouver dans ~/.config
 
 Le fichier tint2rc doit se trouver dans ~/.config/tint2
 
-Les fichiers conkirc et conky-logo.png doivent se touver dans ~/
+Les fichiers conkirc, conky-logo.png, bashrc, gtkrc doivent se touver dans ~/
 
 
 
