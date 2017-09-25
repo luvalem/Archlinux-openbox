@@ -1,0 +1,242 @@
+#!/bin/sh
+#    bl-places-pipemenu - Bl-places-pipemenu un Pipe Menu Openbox 
+#    pour afficher une arborescence de répertoires
+#
+#    Copyright (C) 2010~2016  John Crawley <john@bunsenlabs.org>
+#    Traduit par Luvalem
+#
+#    Ce programme est un logiciel libre: vous pouvez le redistribuer
+#    et / ou le modifier selon les termes de la Licence Publique 
+#    Générale GNU publiée par la Free Software Foundation,
+#    soit la version 3 de la licence, soit (à votre choix)
+#    toute version ultérieure.
+#
+#    Ce programme est distribué dans l'espoir qu'il sera utile,
+#    Mais SANS AUCUNE GARANTIE; Sans même la garantie implicite de
+#    QUALITÉ MARCHANDE OU ADAPTATION À UN USAGE PARTICULIER.  Voir la
+#    GNU General Public License pour plus de détails.
+#
+#   Vous devriez avoir reçu une copie de la Licence Publique 
+#   Générale GNUavec ce programme.  Sinon, voir 
+#   <http://www.gnu.org/licenses/>.
+
+
+#    NB le shell par défaut est appelé parceque plus rapide (d'habitude dash, not bash) 
+
+# Utilisation:
+# <menu id="places" label="Places" execute="/path/to/bl-places-pipemenu ~/" />
+# to your .config/openbox/menu.xml
+
+# ou, si vous voulez le menu "recent files" Incorporé en haut, utilisez:
+# <menu id="places" label="Places" execute="/path/to/bl-places-pipemenu --recent ~/" />
+# assurez-vous que vous avez bl-recent-files-pipemenu quelque part, et entrez son chemin ci-dessous.
+
+# chemin vers le script "recent files", si vous voulez l'incorporer:
+recent_script=~/bin/fichiers-recents-pipemenu
+#recent_script=~/bin/bl-recent-file-pipemenu
+
+# Commande pour ouvrir des dossiers à "ouvrir ici..." - tout gestionnaire de fichiers
+open_folder_cmd=thunar
+# Commande par défaut pour ouvrir des fichiers avec - d'autres pourraient être exo-open, gnome-open, thunar, pcmanfm...
+default_open_cmd=xdg-open
+# choix de l'Editeur de texte
+text_editor=geany
+
+# Fonction pour ouvrir des fichiers avec la commande open par défaut ou une commande alternative pour certains fichiers
+# - ajouter d'autres conditions au choix.
+open_file() {
+    [ -x "$1" ] && exec "$text_editor" "$1"                 # Commenter cette ligne si vous ne souhaitez pas modifier les exécutables au lieu d'exécuter
+    #[ -x "$1" ] && exec "x-terminal-emulator -e" "$1"      # Décommenter et commenter la ligne précédente pour exécuter des exécutables dans le terminal au lieu d'éditer
+    [ "${1##*.}" = desktop ] && exec "$text_editor" "$1"    # Commenter cette ligne si vous ne souhaitez pas modifier les fichiers .desktop au lieu d'exécuter
+    exec "$default_open_cmd" "$1"                           # Utiliser la commande open par défaut si les conditions ci-dessus ne sont pas satisfaites
+}
+
+# Fichier extra dot et répertoires à afficher dans le dossier HOME (Les fichiers dot sont cachés par défaut)
+# Modifier la liste (espace séparé, entouré par guillemets simples) ou commenter cette ligne, au goût:
+shown_dotfiles='.config .local .Xresources .Xdefaults .bash_aliases .bashrc .inputrc .gtkrc-2.0.mine .profile .xsessionrc .xsession-errors'
+
+# Par défaut, ce script affiche les répertoires séparément, avant les fichiers
+# Pour modifier ce comportement, voir NOTE1, NOTE2 et NOTE3 ci-dessous, près de la fin de la page.
+
+HELP='Bl-places-pipemenu un Pipe Menu Openbox pour afficher une arborescence 
+de répertoires
+
+Il devrait normalement être appelé à partir du menu openbox.
+
+Utilisation:
+bl-places-pipemenu [options] [directory tree root]
+
+Options:
+    -h --help           affiche ce message
+    --open  <filepath>  Ouvrir un fichier avec l`application par défaut configurée
+    (Dans ce cas, le script ne génère pas un menu)
+    --recent            Incorporer un sous-menu "fichiers récents"
+
+Si un dossier root d`arborescence n`est pas spécifié, $HOME sera utilisé.
+
+Configuration:
+/usr/bin/bl-places-pipemenu Peut être édité directement pour des changements
+à l`échelle du système, ou copié à ~/bin et modifié pour les modifications
+par l`utilisateur.
+
+Variables éditables et fonctions, en haut du fichier:
+
+recent_script       Chemin d`accès à un script de sortie d`un pipemenu openbox
+open_folder_cmd     Commande pour ouvrir des dossiers - tout gest. de fichiers
+default_open_cmd    Commande par défaut pour ouvrir les fichiers
+text_editor         Pour ouvrir des fichiers texte
+open_file()         Ouvrir des fichiers, en utilisant les commandes 
+                    ci-dessus, ou des alternatives
+shown_dotfiles      Liste des fichiers dot à afficher (ils sont masqués par défaut)
+
+Par défaut, ce script affiche les répertoires séparément, avant les fichiers.
+Pour modifier ce comportement, voir NOTE1, NOTE2 et NOTE3 près de fin de fichier.
+'
+
+############################################################################
+
+case $1 in
+-h|--help)
+    echo "$HELP"
+    exit 0
+    ;;
+# Si l'option "--open" est envoyée en tant que $1, ouvrir le fichier ($2) au lieu de générer le menu
+--open)
+    open_file "$2"
+    echo "$0 : échec de l'ouverture de $2" >&2
+    exit # En cas d'échec de la commande exec
+    ;;
+# Si l'option "--recent" est envoyée, incorporez le menu "fichiers récents"
+--recent)
+    shift
+    output='<openbox_pipe_menu>
+'
+    if [ -x "$recent_script" ]
+    then
+        output="${output}<separator label=\"Récemment ouvert...\" />
+<menu execute=\"$recent_script\" id=\"recent\" label=\"files\" />
+"
+    else
+        echo "$0 : Impossible de trouver le script exécutable $recent_script" >&2
+    fi
+    ;;
+*)
+    output='<openbox_pipe_menu>
+'
+    ;;
+esac
+
+path="${1:-$HOME}"  #Le lieu de départ par défaut est ~, sinon $1
+path="${path%/}"
+[ -d "$path" ] || { echo "$0 : $path N'est pas un répertoire" >&2; exit 1; }
+
+case "$path" in    # Échapper seulement si la chaîne en a besoin
+*\&*|*\<*|*\>*|*\"*|*\'*)
+    pathe=$(sed "s/\&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g;s/\"/\&quot;/g;s/'/\&apos;/g;" <<XXX
+$path
+XXX
+)
+    ;;
+*)
+    pathe=$path
+    ;;
+esac
+
+case "$pathe" in
+*\&apos\;*)
+    pathe_apos=$(sed 's/\&apos;/\&apos;\&quot;\&apos;\&quot;\&apos;/g;'<<XXX
+$pathe
+XXX
+)
+    ;;
+*)
+    pathe_apos=$pathe
+    ;;
+esac
+
+output="$output<separator label=\"$pathe\" />
+<item label=\"Ouvrir Ici...\">
+    <action name=\"Execute\">
+        <command>
+         &apos;$open_folder_cmd&apos; &apos;$pathe_apos&apos;
+        </command>
+    </action>
+</item>
+<separator />
+"
+
+unset extra_entries directories_menu files_menu
+[ "$path" = "$HOME" ] && extra_entries="$shown_dotfiles"
+for i in "$path"/* $extra_entries
+do
+    [ -e "$i" ] || continue    # Uniquement le code de sortie si le fichier existe
+    shortname="${i##*/}"
+    case $shortname in
+    *\&*|*\<*|*\>*|*\"*|*\'*)
+        shortnamee=$(sed "s/\&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g;s/\"/\&quot;/g;s/'/\&apos;/g;" <<XXX
+$shortname
+XXX
+)
+        ;;
+    *)
+        shortnamee=$shortname
+        ;;
+    esac
+    case $shortnamee in
+    *\&apos\;*)
+        shortnamee_apos=$(sed 's/\&apos;/\&apos;\&quot;\&apos;\&quot;\&apos;/g;'<<XXX
+$shortnamee
+XXX
+)
+        ;;
+    *)
+        shortnamee_apos=$shortnamee
+        ;;
+    esac
+    case $shortnamee in
+    *_*)
+        shortnamee_label=$(sed 's/_/__/g;'<<XXX
+$shortnamee
+XXX
+)
+        ;;
+    *)
+        shortnamee_label=$shortnamee
+        ;;
+    esac
+    if [ -d "$i" ]
+    then
+# NOTE1 Si vous souhaitez que les répertoires et les fichiers soient répertoriés ensemble
+# Changer la ligne suivante [directories_menu="$directories_menu] pour lire: [files_menu="$files_menu]
+        directories_menu="$directories_menu
+<menu id=\"${pathe_apos}/${shortnamee_apos}\" label=\"$shortnamee_label\" execute=\"&apos;$0&apos; &apos;${pathe_apos}/${shortnamee_apos}&apos;\" />"
+    else
+        files_menu="$files_menu
+<item label=\"$shortnamee_label\">
+    <action name=\"Execute\">
+        <command>
+        &apos;$0&apos; --open &apos;${pathe_apos}/${shortnamee_apos}&apos;
+        </command>
+    </action>
+</item>"
+    fi
+done
+
+[ -n "$directories_menu" ] && {
+# NOTE2 commenter les 2 lignes suivantes si vous ne souhaitez pas l'étiquette «Répertoires»
+#   output="${output}<separator label=\"Directories\" />
+#"
+    output="${output}${directories_menu}
+"
+}
+[ -n "$files_menu" ] && {
+# NOTE3 commenter les 2 lignes suivantes si vous ne souhaitez pas l'étiquette "Fichiers"
+#   output="${output}<separator label=\"Files\" />
+#"
+    output="${output}${files_menu}
+"
+}
+output="${output}</openbox_pipe_menu>
+"
+printf '%s' "$output"
+exit
