@@ -1,0 +1,9 @@
+Installation Openbox :
+
+sudo pacman -S openbox obmenu lxappearance-obconf-gtk3 python2-xdg tint2 conky
+
+sudo pacman -S audacious catfish compton cronie evince faenza-icon-theme file-roller geany gksu gparted 
+gtk3 gtk3-print-backends gtk-engines gvfs htop lightdm lightdm-gtk-greeter mate-power-manager mirage 
+network-manager-applet nitrogen pavucontrol pulseaudio python-pyqt5 qt4 screefetch system-config-printer 
+terminator thunar thunar-archive-plugin thunar-volman transmission-gtk tumbler vlc volumeicon wget xfburn 
+xfce4-screen-shooter xfce4-notifyd xsane
