@@ -13,3 +13,5 @@ gtk3 gtk3-print-backends gtk-engines gvfs htop lightdm lightdm-gtk-greeter mate-
 network-manager-applet nitrogen pavucontrol pulseaudio python-pyqt5 qt4 screefetch system-config-printer 
 terminator thunar thunar-archive-plugin thunar-volman transmission-gtk tumbler vlc volumeicon wget xfburn 
 xfce4-screen-shooter xfce4-notifyd xsane
+
+
