@@ -1,0 +1,167 @@
+# For commands above TEXT check:
+# http://conky.sourceforge.net/config_settings.html
+#
+# For commands available below TEXT check:
+# http://conky.sourceforge.net/variables.html
+
+#Paramètres de fenêtre
+########################
+
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager,sticky
+own_window_colour 000000
+own_window_class Conky
+own_window_title Bunsen Labs Default Conky
+#own_window_argb_value 50
+
+minimum_size 200 0  ### width | height
+maximum_width 200
+
+gap_x 20    ### left | right
+gap_y 45    ### up | down
+
+alignment tr
+
+
+#Configuration de la police
+############################
+
+# Use Xft (anti-aliased font and stuff)
+use_xft yes
+xftfont Monospace:bold:size=9
+#xftfont Liberation Sans:size=9
+
+# Alpha of Xft font. Must be a value at or between 1 and 0
+xftalpha 1
+# Force UTF8? requires XFT
+override_utf8_locale yes
+
+uppercase no
+
+
+#Configuration des couleurs
+###########################
+
+draw_shades no #yes
+default_shade_color 000000
+
+draw_outline no # amplifies text if yes
+default_outline_color 000000
+
+#default_color 656667 # Waldorf original colour
+#default_color 7a7a7a # Flame  & Bunsen Grey
+#default_color 929292 # Labs Grey
+default_color C0C0C0 # Silver
+color0 B0E0E6 # PowderBlue
+color1 778899 # LightSlateGray
+color2 D8BFD8 # Thistle
+color3 9ACD32 # YellowGreen
+color4 FFA07A # LightSalmon
+color5 FFDEAD # NavajoWhite
+color6 00BFFF # DeepSkyBlue
+color7 5F9EA0 # CadetBlue
+color8 BDB76B # DarkKhaki
+color9 CD5C5C # IndianRed
+
+
+#Section bordures
+#################
+
+draw_borders no
+# Stippled borders?
+stippled_borders 5
+# border margins
+border_inner_margin 5
+border_outer_margin 0
+# border width
+border_width 2
+# graph borders
+draw_graph_borders yes #no
+#default_graph_size 15 40
+
+#Section diverse
+#####################
+
+#Valeur booléenne, si vrai, Conky sera bifurqué en arrière-plan lors du démarrage.
+background yes
+
+# Ajoute des espaces autour de certains objets pour les empêcher de 
+#déplacer d'autres choses, cela ne vous aide que si vous utilisez une police mono.
+# Options: right, left or none
+use_spacer none
+
+# Default and Minimum size is 256 - A besoin de plus pour les commandes 
+#simples qui «appelle» beaucoup de texte IE: bash scripts
+text_buffer_size 6144
+
+# Soustraire (système de fichiers) les tampons de la mémoire utilisée?
+no_buffers yes
+
+# changer GiB en G et MiB en M
+short_units yes
+
+# Like it says, ot pads the decimals on % values doesn't seem to work since v1.7.1
+pad_percents 2
+
+# Taille du cache d'image Imlib2, en octets. 
+# Par défaut 4MiB Augmentez cette valeur si vous utilisez $ image en lots. 
+# Réglez à 0 pour désactiver le cache d'image.
+imlib_cache_size 0
+
+# Utilisez l'extension Xdbe? (Élimine le scintillement)
+# Il est fortement recommandé d'utiliser la propre fenêtre avec celui-ci
+# ainsi le double tampon ne sera pas si grand.
+double_buffer yes
+
+#  Taille maximale du tampon de texte utilisateur, cad la mise en page 
+#  sous la ligne TEXT dans le fichier de configuration
+#  (default is 16384 bytes)
+# max_user_text 16384
+
+update_interval 1
+
+TEXT
+${image $HOME/.conky-logo.png -p 45,0}
+
+
+
+
+$sysname $kernel
+${hr}
+${color}${alignc}I N F O  S Y S T E M E
+${hr}
+Hôte:${alignr}${nodename}
+Temps Connex.:${alignr}${uptime}
+UTC:${alignr}${utime %H:%M}
+
+${goto 60}Utilisé${alignr}Taille
+Root${goto 60}${fs_used /}${alignr}${fs_size /}
+Home${goto 60}${fs_used /home}${alignr}${fs_size /home}
+
+${goto 60}Utilisé${alignr}Max
+RAM${goto 60}${mem}${alignr}${memmax}
+##Swap${goto 60}${swap}${alignr}${swapmax}
+
+CPU:${goto 60}Utilisé${alignr}GHz
+Avg${goto 60}${if_match ${cpu cpu0}<10}  ${cpu cpu0}\
+${else}${if_match ${cpu cpu0}<100} ${cpu cpu0}\
+${else}${cpu cpu0}${endif}${endif}%${alignr}${freq_g}
+
+${alignc}RACCOURCIS CLAVIER
+${hr}
+[Alt] + F2${alignr}Run Dialog
+[Alt] + F3${alignr}Alt Menu
+[S] + Space${alignr}Openbox Menu
+[S] + Tab${alignr}Client Menu
+[S] + t${alignr}Terminal
+[S] + f${alignr}Navigateur Fichiers
+[S] + e${alignr}Editeur Texte
+[S] + m${alignr}Lecteur Media
+[S] + w${alignr}Navigateur Web
+[S] + h${alignr}Gestion. Taches
+[S] + l${alignr}Fermeture Ecran
+[S] + v${alignr}Controle Volume
+[S] + x${alignr}Sortie
+[PrtSc]${alignr}Capture Ecran
