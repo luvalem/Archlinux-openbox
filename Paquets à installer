@@ -1,3 +1,9 @@
+Installer Archlinux suivant tuto de Frederic Bezies :
+
+http://frederic.bezies.free.fr/blog/?p=16648
+
+jusqu'a gnome (ne pas installer cette section)
+
 Installation Openbox :
 
 sudo pacman -S openbox obmenu lxappearance-obconf-gtk3 python2-xdg tint2 conky
