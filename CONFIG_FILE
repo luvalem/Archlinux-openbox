@@ -1,0 +1,9 @@
+[Display]
+banner = /usr/share/ob-session-logout/archlinux-logo-dark.png
+
+[Commands]
+Sortie = openbox --exit
+suspend = systemctl suspend
+redémarrer = systemctl reboot
+éteindre = systemctl poweroff
+
